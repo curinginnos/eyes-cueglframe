@@ -345,12 +345,12 @@ static bool execute(const CommonOptions& options)
     // Get the camera devices.
     std::vector<CameraDevice*> cameraDevices;
     iCameraProvider->getCameraDevices(&cameraDevices);
-    if (cameraDevices.size() < 2)
-        ORIGINATE_ERROR("Must have at least 2 sensors available");
+    // if (cameraDevices.size() < 2)
+    //     ORIGINATE_ERROR("Must have at least 2 sensors available");
 
     std::vector <CameraDevice*> lrCameras;
     lrCameras.push_back(cameraDevices[0]); // Left Camera (the 1st camera will be used for AC)
-    lrCameras.push_back(cameraDevices[1]); // Right Camera
+    // lrCameras.push_back(cameraDevices[0]); // Right Camera
 
     // Create the capture session, AutoControl will be based on what the 1st device sees.
     UniqueObj<CaptureSession> captureSession(iCameraProvider->createCaptureSession(lrCameras));
@@ -379,7 +379,7 @@ static bool execute(const CommonOptions& options)
         ORIGINATE_ERROR("Failed to create left stream");
 
     PRODUCER_PRINT("Creating right stream.\n");
-    iStreamSettings->setCameraDevice(lrCameras[1]);
+    iStreamSettings->setCameraDevice(lrCameras[0]);
     UniqueObj<OutputStream> streamRight(iCaptureSession->createOutputStream(streamSettings.get()));
     IEGLOutputStream *iStreamRight = interface_cast<IEGLOutputStream>(streamRight);
     if (!iStreamRight)
