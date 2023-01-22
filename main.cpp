@@ -43,8 +43,10 @@
 // Histogram generation methods borrowed from cudaHistogram sample.
 #include "../cudaHistogram/histogram.h"
 
+#include "opencv2/core.hpp"
 
 using namespace Argus;
+using namespace cv;
 
 namespace ArgusSamples
 {

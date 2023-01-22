@@ -30,6 +30,9 @@ project(argus_syncsensor)
 
 set(CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/cmake" "${CMAKE_MODULE_PATH}")
 
+# Jetson Nano Optimization
+set(CMAKE_CXX_FLAGS "-fPIC -O3 -ffast-math -march=armv8-a+simd -mtune=cortex-a53")
+
 find_package(CUDA)
 
 # Fail silently if CUDA is not found
@@ -37,6 +40,7 @@ if(CUDA_FOUND)
     find_package(Argus REQUIRED)
     find_package(OpenGLES REQUIRED)
     find_package(EGL REQUIRED)
+    find_package(OpenCV REQUIRED)
 
     set(SOURCES
         main.cpp
@@ -46,6 +50,7 @@ if(CUDA_FOUND)
 
     include_directories(
         ${ARGUS_INCLUDE_DIR}
+        ${OpenCV_INCLUDE_DIRS}
         ${CMAKE_SOURCE_DIR}/samples/utils
         ${CMAKE_SOURCE_DIR}/samples/cudaHistogram
         )
@@ -54,6 +59,7 @@ if(CUDA_FOUND)
 
     target_link_libraries(${PROJECT_NAME}
         ${ARGUS_LIBRARIES}
+        ${OpenCV_LIBS}
         argussampleutils
         cuda
         )
