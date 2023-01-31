@@ -11,7 +11,12 @@ namespace ArgusSamples
         CUresult r = cuEGLStreamConsumerAcquireFrame(&m_connection, &m_resource, &m_stream, -1);
         if (r == CUDA_SUCCESS)
         {
-            cuGraphicsResourceGetMappedEglFrame(&m_frame, m_resource, 0, 0);
+            r = cuGraphicsResourceGetMappedEglFrame(&m_frame, m_resource, 0, 0);
+
+            if (r == CUDA_SUCCESS)
+            {
+                printf("Constructor finished!\n");
+            }
         }
     }
 
@@ -34,24 +39,56 @@ namespace ArgusSamples
         if (!hasValidFrame() || !histogramData || !time)
             ORIGINATE_ERROR("Invalid state or output parameters");
 
-        // Create surface from luminance channel.
-        CUDA_RESOURCE_DESC cudaResourceDesc;
-        memset(&cudaResourceDesc, 0, sizeof(cudaResourceDesc));
-        cudaResourceDesc.resType = CU_RESOURCE_TYPE_ARRAY;
-        cudaResourceDesc.res.array.hArray = m_frame.frame.pArray[0];
-        CUsurfObject cudaSurfObj = 0;
-        CUresult cuResult = cuSurfObjectCreate(&cudaSurfObj, &cudaResourceDesc);
-        if (cuResult != CUDA_SUCCESS)
-        {
-            ORIGINATE_ERROR("Unable to create the surface object (CUresult %s)",
-                            getCudaErrorString(cuResult));
-        }
+        // size_t numElem = cudaEgl->planeDesc[0].pitch * cudaEgl->planeDesc[0].height;
 
-        // Generated the histogram.
-        // *time += histogram(cudaSurfObj, m_frame.width, m_frame.height, histogramData);
+        size_t width = m_frame.width;
+        size_t height = m_frame.height;
+        size_t pith = m_frame.pitch;
+        size_t planeCount = m_frame.planeCount;
 
-        // Destroy surface.
-        cuSurfObjectDestroy(cudaSurfObj);
+        printf("===\n");
+        printf("width: %u\n", width);
+        printf("height: %u\n", height);
+        printf("pith: %u\n", pith);
+        printf("planeCount: %u\n", planeCount);
+
+        size_t ARRAY_SIZE = width * height;
+        size_t ARRAY_BYTES = sizeof(uchar) * ARRAY_SIZE;
+
+        CUarray cuArray = m_frame.frame.pArray[0];
+        // uchar *d_ptr = (uchar *)m_frame.frame.pPitch[0];
+        uchar *h_ptr = (uchar *)malloc(ARRAY_BYTES);
+
+        printf("%p\n", &cuArray);
+        // printf("%p\n", d_ptr);
+        printf("%p\n", h_ptr);
+
+        // cudaError_t r = cudaMemcpy((void *)h_ptr, (void *)d_ptr, ARRAY_BYTES, cudaMemcpyDeviceToHost);
+
+        // const char* str = cudaGetErrorString(r);
+
+        // printf("%s\n", str);
+
+        // 640x480
+        // 640/2 = 320 | 290 320 350
+        // 480/2 = 240 | 210 240 270
+
+        // size_t yStart = 210;
+        // size_t xStart = 290;
+
+        // for (size_t y = 0; y < 60; y++)
+        // {
+        //     for (size_t x = 0; x < 60; x++)
+        //     {
+        //         size_t posY = (yStart + y) * width;
+        //         size_t posX = (xStart + x);
+        //         size_t idx = posY + posX;
+        //         printf("%u ", d_ptr[idx]);
+        //     }
+        //     printf("\n");
+        // }
+
+        // free(d_ptr);
 
         return true;
     }

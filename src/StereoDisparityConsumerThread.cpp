@@ -76,8 +76,7 @@ namespace ArgusSamples
 
             // Calculate histograms.
             float time = 0.0f;
-            if (left.generateHistogram(histogramLeft, &time) &&
-                right.generateHistogram(histogramRight, &time))
+            if (left.generateHistogram(histogramLeft, &time))
             {
                 // // Calculate KL distance.
                 // float distance = 0.0f;

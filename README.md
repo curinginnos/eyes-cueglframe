@@ -35,3 +35,11 @@ NPP_CUDA_KERNEL_EXECUTION_ERROR
 ## Reference
 [Jetson MultiMedia API to cv::cuda::GpuMat](https://forums.developer.nvidia.com/t/jetson-multimedia-api-to-cv-gpumat/217292)
 [​How can I transform CUeglFrame to OpenCV Mat object?](https://forums.developer.nvidia.com/t/how-can-i-transform-cueglframe-to-opencv-mat-object/164505)
+
+##
+```
+width: 640
+height: 480
+pith: 0
+planeCount: 2
+```
