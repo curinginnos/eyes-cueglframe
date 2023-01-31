@@ -8,8 +8,8 @@
                 "/usr/src/jetson_multimedia_api/argus/include/**",
                 "/usr/src/jetson_multimedia_api/argus/samples/utils/**",
                 "/usr/include/opencv4",
-                "/usr/local/cuda-10.2/include"
-                // "/usr/local/include/eigen3"
+                "/usr/local/cuda-10.2/include",
+                "/usr/src/jetson_multimedia_api/argus/include"
             ],
             "defines": [],
             "compilerPath": "/usr/bin/clang-8",

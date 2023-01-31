@@ -43,9 +43,9 @@ if(CUDA_FOUND)
     find_package(OpenCV REQUIRED)
 
     set(SOURCES
-        main.cpp
-        KLDistance.cu
-        ${CMAKE_SOURCE_DIR}/samples/cudaHistogram/histogram.cu
+        "./src/main.cpp"
+        "./src/ScopedCudaEGLStreamFrameAcquire.cpp"
+        "./src/StereoDisparityConsumerThread.cpp"
         )
 
     include_directories(
@@ -53,6 +53,8 @@ if(CUDA_FOUND)
         ${OpenCV_INCLUDE_DIRS}
         ${CMAKE_SOURCE_DIR}/samples/utils
         ${CMAKE_SOURCE_DIR}/samples/cudaHistogram
+        "/usr/local/cuda-10.2/include"
+        "./include"
         )
 
     cuda_add_executable(${PROJECT_NAME} ${SOURCES})
@@ -62,6 +64,9 @@ if(CUDA_FOUND)
         ${OpenCV_LIBS}
         argussampleutils
         cuda
+        nppc
+        nppicc
+        nppim
         )
 
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)
