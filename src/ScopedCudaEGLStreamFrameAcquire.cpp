@@ -104,10 +104,10 @@ namespace ArgusSamples
         return m_resource && checkFormat();
     }
 
-    bool ScopedCudaEGLStreamFrameAcquire::cvtNV12toBGR() const
+    cv::cuda::GpuMat ScopedCudaEGLStreamFrameAcquire::getGpuMat() const
     {
         if (!hasValidFrame())
-            return false;
+            return cv::cuda::GpuMat();
 
         CUarray cuY = m_frame.frame.pArray[0];
         CUarray cuCrCb = m_frame.frame.pArray[1];
@@ -171,19 +171,19 @@ namespace ArgusSamples
         gpuMatBGR.data = d_bgr;
         gpuMatBGR.step = WIDTH * 3 * sizeof(uchar);
 
-        cv::Mat cpuMatBGR;
-        cpuMatBGR.create(HEIGHT, WIDTH, CV_8UC3);
-        cpuMatBGR.step = WIDTH * 3 * sizeof(uchar);
+        // cv::Mat cpuMatBGR;
+        // cpuMatBGR.create(HEIGHT, WIDTH, CV_8UC3);
+        // cpuMatBGR.step = WIDTH * 3 * sizeof(uchar);
 
-        gpuMatBGR.download(cpuMatBGR);
+        // gpuMatBGR.download(cpuMatBGR);
 
-        cv::imshow("img", cpuMatBGR);
-        cv::pollKey();
+        // cv::imshow("img", cpuMatBGR);
+        // cv::pollKey();
 
-        cudaFree(d_Y);
-        cudaFree(d_CrCb);
+        // cudaFree(d_Y);
+        // cudaFree(d_CrCb);
         
-        return true;
+        return gpuMatBGR;
     }
 
     Size2D<uint32_t> ScopedCudaEGLStreamFrameAcquire::getSize() const

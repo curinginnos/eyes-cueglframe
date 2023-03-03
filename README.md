@@ -1,45 +1,21 @@
-# Argus + OpenCV + GPU
+# Argus + CUDA
 
-```sh
-$ sudo systemctl start nvargus-daemon.service
-```
+## Overview
 
-```
-nano1@nano1-desktop:/usr/local/cuda/bin$ sudo ./nvprof /usr/src/jetson_multimedia_api/argus/build/samples/syncSensor/argus_syncsensor 
-```
+This project is based on `argus/samples/syncSensor`.
 
-`Argus` -> `EGL` -> `CUDA` -> `cv::GpuMat`
+`CUstream`, a CUDA version of `EGLStream`, is introduced in the original code, but doesn't provide the conversion from `CUeglFrame` into `cv::cuda::GpuMat`
 
-```
-Loop begins
-eglQueryStreamKHR
-eglQueryStreamKHR
-eglQueryStreamKHR finished
-Frame acquired succesfully!
-cuGraphicsResourceGetMappedEglFrame failed
-unspecified launch failure
-ScopedCudaEGL finished
-0x7f844a0e50
-HERE!
-0x7f844a0e50
-Before nppi
-640
-480
-0x7f98d70aa0
-0
-After nppi
-Failed
-NPP_CUDA_KERNEL_EXECUTION_ERROR
-```
+## Prerequisite
 
-## Reference
-[Jetson MultiMedia API to cv::cuda::GpuMat](https://forums.developer.nvidia.com/t/jetson-multimedia-api-to-cv-gpumat/217292)
-[​How can I transform CUeglFrame to OpenCV Mat object?](https://forums.developer.nvidia.com/t/how-can-i-transform-cueglframe-to-opencv-mat-object/164505)
+### YUV
 
-##
-```
-width: 640
-height: 480
-pith: 0
-planeCount: 2
-```
+YUV is a a color model, just like BGR. What's special about YUV is its compression method.
+
+You might have seen YUV444, YUV422, YUV420, and YCrC420.
+
+BTW, YCrCb and YUV are the same.
+
+Three digits that come after denotes how it's compressed.
+
+TBA ... 

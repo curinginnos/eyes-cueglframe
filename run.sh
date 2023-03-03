@@ -4,6 +4,7 @@ sudo systemctl restart nvargus-daemon.service
 
 ./argus_syncsensor --duration 30
 
+# ./argus_syncsensor --duration 30
 
 
 

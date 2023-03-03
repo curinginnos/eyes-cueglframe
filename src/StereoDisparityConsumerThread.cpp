@@ -2,6 +2,8 @@
 #include "ScopedCudaEGLStreamFrameAcquire.hpp"
 
 #include "Error.h"
+#include "opencv2/highgui.hpp"
+
 
 using namespace Argus;
 
@@ -33,13 +35,26 @@ namespace ArgusSamples
 
     bool StereoDisparityConsumerThread::threadExecute()
     {
-        CONSUMER_PRINT("Waiting for Argus producer to connect to left stream.\n");
-        m_leftStream->waitUntilConnected();
+        if(m_leftStream->waitUntilConnected() == STATUS_OK)
+        {
+            CONSUMER_PRINT("Waiting for Argus producer to connect to left stream.\n");
+        }
 
-        CONSUMER_PRINT("Waiting for Argus producer to connect to right stream.\n");
-        m_rightStream->waitUntilConnected();
+        if(m_rightStream->waitUntilConnected() == STATUS_OK)
+        {
+            CONSUMER_PRINT("Waiting for Argus producer to connect to right stream.\n");
+        }
 
         CONSUMER_PRINT("Streams connected, processing frames.\n");
+
+        Size2D<uint32_t> resolution = m_leftStream->getResolution();
+        int height = resolution.height();
+        int width = resolution.width();
+
+        cv::Mat cpuMat;
+        cpuMat.create(height, width, CV_8UC3);
+        cpuMat.step = width * 3 * sizeof(uchar);
+
         while (true)
         {
             CONSUMER_PRINT("RETRIEVING FRAME\n");
@@ -72,8 +87,15 @@ namespace ArgusSamples
             ScopedCudaEGLStreamFrameAcquire left(m_cuStreamLeft);
             ScopedCudaEGLStreamFrameAcquire right(m_cuStreamRight);
 
-            if(!left.cvtNV12toBGR())
+            cv::cuda::GpuMat gpuMat = left.getGpuMat();
+
+            gpuMat.download(cpuMat);
+
+            if (gpuMat.empty())
                 break;
+
+            cv::imshow("cpuMat", cpuMat);
+            cv::pollKey();
 
             CONSUMER_PRINT("RETRIEVING FRAME FINISHED\n");
         }

@@ -5,6 +5,8 @@
 #include <cuda.h>
 #include <cudaEGL.h>
 
+#include "opencv2/core/cuda.hpp"
+
 namespace ArgusSamples
 {
     // Debug print macros.
@@ -35,9 +37,7 @@ namespace ArgusSamples
          */
         bool hasValidFrame() const;
 
-
-        bool cvtNV12toBGR() const; 
-
+        cv::cuda::GpuMat getGpuMat() const; 
 
         /**
          * Returns the size (resolution) of the frame.
