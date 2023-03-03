@@ -61,8 +61,6 @@ namespace ArgusSamples
         cv::imwrite(filename, frame);
     }
 
-    int FILE_IDX = 0;
-
     void checkError(cudaError_t err, const char *func)
     {
         if (err)

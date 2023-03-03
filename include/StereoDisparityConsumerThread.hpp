@@ -3,14 +3,9 @@
 #include <Argus/Argus.h>
 #include <cudaEGL.h>
 
-#include "CommonOptions.h"
 #include "CUDAHelper.h"
 #include "EGLGlobal.h"
-#include "Error.h"
-
 #include "Thread.h"
-
-#include "../cudaHistogram/histogram.h"
 
 namespace ArgusSamples
 {

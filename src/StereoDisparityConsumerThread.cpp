@@ -1,6 +1,8 @@
 #include "StereoDisparityConsumerThread.hpp"
 #include "ScopedCudaEGLStreamFrameAcquire.hpp"
 
+#include "Error.h"
+
 using namespace Argus;
 
 namespace ArgusSamples
@@ -38,8 +40,6 @@ namespace ArgusSamples
         m_rightStream->waitUntilConnected();
 
         CONSUMER_PRINT("Streams connected, processing frames.\n");
-        unsigned int histogramLeft[HISTOGRAM_BINS];
-        unsigned int histogramRight[HISTOGRAM_BINS];
         while (true)
         {
             EGLint streamState = EGL_STREAM_STATE_CONNECTING_KHR;
@@ -73,22 +73,7 @@ namespace ArgusSamples
             if (!left.hasValidFrame() || !right.hasValidFrame())
                 break;
 
-            // Calculate histograms.
-            float time = 0.0f;
-            if (left.generateHistogram())
-            {
-                // // Calculate KL distance.
-                // float distance = 0.0f;
-                // Size2D<uint32_t> size = right.getSize();
-                // float dTime = computeKLDistance(histogramRight,
-                //                                 histogramLeft,
-                //                                 HISTOGRAM_BINS,
-                //                                 size.width() * size.height(),
-                //                                 &distance);
-                // CONSUMER_PRINT("KL distance of %6.3f with %5.2f ms computing histograms and "
-                //                "%5.2f ms spent computing distance\n",
-                //                distance, time, dTime);
-            }
+            left.generateHistogram();
         }
         CONSUMER_PRINT("No more frames. Cleaning up.\n");
 
