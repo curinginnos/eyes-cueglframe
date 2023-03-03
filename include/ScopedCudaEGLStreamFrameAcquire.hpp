@@ -1,31 +1,9 @@
 #pragma once
 
 #include <Argus/Argus.h>
-#include <cudaEGL.h>
-
-#include "CommonOptions.h"
-#include "CUDAHelper.h"
-#include "EGLGlobal.h"
-#include "Error.h"
-
-#include "CUDAHelper.h"
-
-#include "opencv2/core.hpp"
-#include "opencv2/core/cuda.hpp"
-#include "opencv2/cudaarithm.hpp"
-#include "opencv2/cudafilters.hpp"
-#include "opencv2/cudaimgproc.hpp"
-#include "opencv2/highgui.hpp"
-
-#include <npp.h>
-#include <nppi.h>
-#include <nppdefs.h>
-#include <nppi_color_conversion.h>
-
-#include "../cudaHistogram/histogram.h"
-
 #include <iostream>
-
+#include <cuda.h>
+#include <cudaEGL.h>
 
 namespace ArgusSamples
 {
@@ -57,12 +35,7 @@ namespace ArgusSamples
          */
         bool hasValidFrame() const;
 
-        /**
-         * Use CUDA to generate a histogram from the acquired frame.
-         * @param[out] histogramData Output array for the histogram.
-         * @param[out] time Time to generate histogram, in milliseconds.
-         */
-        bool generateHistogram(unsigned int histogramData[HISTOGRAM_BINS], float *time);
+        bool generateHistogram();
 
         /**
          * Returns the size (resolution) of the frame.
@@ -74,11 +47,7 @@ namespace ArgusSamples
          * Returns whether or not the frame format is supported.
          */
         bool checkFormat() const;
-        bool cvtYUV2BGR() const;
-        bool cvtCUDAYUV2BGR() const; // not supported
-        bool cvtNPPYUV2BGR() const; // not supported
-        bool cvtNV12toBGR() const; // not supported
-        size_t calcByte();
+        bool cvtNV12toBGR() const; 
 
         CUeglStreamConnection &m_connection;
         CUstream m_stream;

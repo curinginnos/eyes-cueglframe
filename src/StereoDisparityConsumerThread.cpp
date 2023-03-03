@@ -2,7 +2,6 @@
 #include "ScopedCudaEGLStreamFrameAcquire.hpp"
 
 using namespace Argus;
-using namespace cv;
 
 namespace ArgusSamples
 {
@@ -76,7 +75,7 @@ namespace ArgusSamples
 
             // Calculate histograms.
             float time = 0.0f;
-            if (left.generateHistogram(histogramLeft, &time))
+            if (left.generateHistogram())
             {
                 // // Calculate KL distance.
                 // float distance = 0.0f;
