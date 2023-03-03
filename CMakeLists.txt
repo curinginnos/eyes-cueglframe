@@ -46,6 +46,7 @@ if(CUDA_FOUND)
         "./src/main.cpp"
         "./src/ScopedCudaEGLStreamFrameAcquire.cpp"
         "./src/StereoDisparityConsumerThread.cpp"
+        "./src/cuUtils.cu"
         )
 
     include_directories(
@@ -67,6 +68,7 @@ if(CUDA_FOUND)
         nppc
         nppicc
         nppim
+        nppig
         )
 
     install(TARGETS ${PROJECT_NAME} DESTINATION bin)

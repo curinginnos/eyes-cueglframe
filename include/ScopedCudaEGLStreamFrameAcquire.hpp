@@ -24,6 +24,7 @@
 
 #include "../cudaHistogram/histogram.h"
 
+#include <iostream>
 
 
 namespace ArgusSamples
@@ -73,6 +74,11 @@ namespace ArgusSamples
          * Returns whether or not the frame format is supported.
          */
         bool checkFormat() const;
+        bool cvtYUV2BGR() const;
+        bool cvtCUDAYUV2BGR() const; // not supported
+        bool cvtNPPYUV2BGR() const; // not supported
+        bool cvtNV12toBGR() const; // not supported
+        size_t calcByte();
 
         CUeglStreamConnection &m_connection;
         CUstream m_stream;

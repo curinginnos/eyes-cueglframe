@@ -83,6 +83,7 @@ namespace ArgusSamples
             interface_cast<IEGLOutputStreamSettings>(streamSettings);
         if (!iStreamSettings || !iEGLStreamSettings)
             ORIGINATE_ERROR("Failed to create OutputStreamSettings");
+        iEGLStreamSettings->setMetadataEnable(true);
         iEGLStreamSettings->setPixelFormat(PIXEL_FMT_YCbCr_420_888);
         iEGLStreamSettings->setResolution(STREAM_SIZE);
         iEGLStreamSettings->setEGLDisplay(g_display.get());

@@ -1,6 +1,11 @@
 cd /usr/src/jetson_multimedia_api/argus/build/samples/syncSensor
 
-./argus_syncsensor --duration 10
+sudo systemctl restart nvargus-daemon.service
+
+./argus_syncsensor --duration 30
+
+
+
 
 
 # sudo systemctl restart nvargus-daemon.service
