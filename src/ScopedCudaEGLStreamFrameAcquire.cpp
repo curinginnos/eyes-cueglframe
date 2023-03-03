@@ -87,12 +87,7 @@ namespace ArgusSamples
         CUresult r = cuEGLStreamConsumerAcquireFrame(&m_connection, &m_resource, &m_stream, -1);
         if (r == CUDA_SUCCESS)
         {
-            r = cuGraphicsResourceGetMappedEglFrame(&m_frame, m_resource, 0, 0);
-
-            if (r == CUDA_SUCCESS)
-            {
-                printf("Constructor finished!\n");
-            }
+            cuGraphicsResourceGetMappedEglFrame(&m_frame, m_resource, 0, 0);
         }
     }
 
@@ -111,6 +106,9 @@ namespace ArgusSamples
 
     bool ScopedCudaEGLStreamFrameAcquire::cvtNV12toBGR() const
     {
+        if (!hasValidFrame())
+            return false;
+
         CUarray cuY = m_frame.frame.pArray[0];
         CUarray cuCrCb = m_frame.frame.pArray[1];
         
@@ -140,7 +138,7 @@ namespace ArgusSamples
                                     HEIGHT,
                                     cudaMemcpyDeviceToDevice);
 
-        checkError(err, "cudaMemcpy2DFromArray - Y");
+        // checkError(err, "cudaMemcpy2DFromArray - Y");
 
         err = cudaMemcpy2DFromArray(d_CrCb,
                                     WIDTH * sizeof(uchar),
@@ -151,7 +149,7 @@ namespace ArgusSamples
                                     HEIGHT_HALF,
                                     cudaMemcpyDeviceToDevice);
 
-        checkError(err, "cudaMemcpy2DFromArray - CrCb");
+        // checkError(err, "cudaMemcpy2DFromArray - CrCb");
 
         Npp8u *const pSrc[2] = {d_Y, d_CrCb};
         int rSrcStep = WIDTH * sizeof(uchar);
@@ -185,16 +183,6 @@ namespace ArgusSamples
         cudaFree(d_Y);
         cudaFree(d_CrCb);
         
-        return true;
-    }
-
-    bool ScopedCudaEGLStreamFrameAcquire::generateHistogram()
-    {
-        if (!hasValidFrame())
-            ORIGINATE_ERROR("Invalid state or output parameters");
-
-        cvtNV12toBGR();
-
         return true;
     }
 

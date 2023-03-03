@@ -35,7 +35,9 @@ namespace ArgusSamples
          */
         bool hasValidFrame() const;
 
-        bool generateHistogram();
+
+        bool cvtNV12toBGR() const; 
+
 
         /**
          * Returns the size (resolution) of the frame.
@@ -47,8 +49,7 @@ namespace ArgusSamples
          * Returns whether or not the frame format is supported.
          */
         bool checkFormat() const;
-        bool cvtNV12toBGR() const; 
-
+        
         CUeglStreamConnection &m_connection;
         CUstream m_stream;
         CUgraphicsResource m_resource;

@@ -42,6 +42,8 @@ namespace ArgusSamples
         CONSUMER_PRINT("Streams connected, processing frames.\n");
         while (true)
         {
+            CONSUMER_PRINT("RETRIEVING FRAME\n");
+
             EGLint streamState = EGL_STREAM_STATE_CONNECTING_KHR;
 
             // Check both the streams and proceed only if they are not in DISCONNECTED state.
@@ -70,10 +72,10 @@ namespace ArgusSamples
             ScopedCudaEGLStreamFrameAcquire left(m_cuStreamLeft);
             ScopedCudaEGLStreamFrameAcquire right(m_cuStreamRight);
 
-            if (!left.hasValidFrame() || !right.hasValidFrame())
+            if(!left.cvtNV12toBGR())
                 break;
 
-            left.generateHistogram();
+            CONSUMER_PRINT("RETRIEVING FRAME FINISHED\n");
         }
         CONSUMER_PRINT("No more frames. Cleaning up.\n");
 
